@@ -33,9 +33,10 @@ public interface IQueue<T> {
 	 * Returns the items on the head but doesn't remove it
 	 * from the queue
 	 * 
-	 * @return
+	 * @return null if the queue is empty
+	 * 		   item pointed by head, if the queue is not empty
 	 */
-	public boolean peek();
+	public T peek();
 	
 	/**
 	 * @return true  if the queue is empty

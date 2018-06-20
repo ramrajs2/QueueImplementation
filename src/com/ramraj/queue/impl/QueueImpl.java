@@ -69,8 +69,10 @@ public class QueueImpl<T> implements IQueue<T>{
 	}
 
 	@Override
-	public boolean peek() {
-		return false;
+	public T peek() {
+		if(isEmpty())
+			return null;
+		return items[head];
 	}
 
 	@Override
