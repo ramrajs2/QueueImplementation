@@ -61,6 +61,9 @@ public class QueueImpl<T> implements IQueue<T>{
 
 		synchronized (items)
 		{
+			if(head == -1) {
+				head++;
+			}
 			tail = (tail + 1) % arraySize;
 			items[tail] = item;
 			itemCount++;
