@@ -116,10 +116,15 @@ public class QueueImpl<T> implements IQueue<T>{
 			T[] newItemsArray = (T[]) new Object[size];
 			try
 			{
-				for (int i = 0; i <= itemCount; i++)
+				int i = head;
+				int newArrayindex = 0;
+				while (i <= tail)
 				{
-					newItemsArray[i] = items[i];
+					newItemsArray[newArrayindex++] = items[i];
+					i = (i+1) % arraySize;
 				}
+				head = 0;
+				tail = newArrayindex - 1;
 				items = newItemsArray;
 				arraySize = size;
 			}
