@@ -3,6 +3,7 @@ package com.ramraj.queue.impl;
 import com.ramraj.queue.IQueue;
 import com.ramraj.queue.exception.EmptyQueueException;
 import com.ramraj.queue.exception.FullQueueException;
+import com.ramraj.queue.exception.QueueResizeFailureException;
 
 /**
  * Implementation of {@link IQueue}
@@ -14,6 +15,7 @@ import com.ramraj.queue.exception.FullQueueException;
 public class QueueImpl<T> implements IQueue<T>{
 
 	private T[] items;
+	private int itemCount;
 	private int arraySize;
 	private int head;
 	private int tail;
@@ -21,6 +23,7 @@ public class QueueImpl<T> implements IQueue<T>{
 	public QueueImpl(int initialSize) {
 		items = (T[]) new Object[initialSize];
 		arraySize = initialSize;
+		itemCount = 0;
 		head = -1;
 		tail = -1;
 	}
@@ -33,7 +36,8 @@ public class QueueImpl<T> implements IQueue<T>{
 		}
 
 		T item = items[head];
-		if(head == tail) {
+		itemCount--;
+		if(itemCount == 0) {
 			head = tail = -1;
 		}
 		else {
@@ -51,17 +55,18 @@ public class QueueImpl<T> implements IQueue<T>{
 
 		tail = (tail+1)%arraySize;
 		items[tail] = item;
+		itemCount++;
 		return true;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return head == -1;
+		return itemCount == 0;
 	}
 
 	@Override
 	public boolean isFull() {
-		return (tail+1)%arraySize == head;
+		return itemCount == arraySize;
 	}
 
 	@Override
@@ -76,8 +81,27 @@ public class QueueImpl<T> implements IQueue<T>{
 	}
 
 	@Override
-	public boolean resize(int size) {
-		return false;
+	public boolean resize(int size) throws QueueResizeFailureException
+	{
+		if(size < itemCount) {
+			throw new QueueResizeFailureException("New capacity is lesser than the current items capacity");
+		}
+
+		if(size == arraySize)
+			return true;
+
+		T[] newItemsArray = (T[])new Object[size];
+		try {
+			for(int i=0; i<=itemCount; i++) {
+				newItemsArray[i] = items[i];
+			}
+			items = newItemsArray;
+			arraySize = size;
+		}
+		catch (Exception e) {
+			throw new QueueResizeFailureException("Not able to resize the array", e);
+		}
+		return  true;
 	}
 
 }

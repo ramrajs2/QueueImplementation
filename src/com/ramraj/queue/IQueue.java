@@ -2,6 +2,7 @@ package com.ramraj.queue;
 
 import com.ramraj.queue.exception.EmptyQueueException;
 import com.ramraj.queue.exception.FullQueueException;
+import com.ramraj.queue.exception.QueueResizeFailureException;
 
 /**
  * Generic interface to define the features of my queues
@@ -61,5 +62,5 @@ public interface IQueue<T> {
 	 * @param size New size for the array
 	 * @return
 	 */
-	public boolean resize(int size);
+	public boolean resize(int size) throws QueueResizeFailureException;
 }
