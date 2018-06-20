@@ -71,6 +71,11 @@ public class QueueImpl<T> implements IQueue<T>{
 
 	@Override
 	public void print() {
+		System.out.println("Queue Items : ");
+		for (int i = 0; i < itemCount; i++)
+		{
+			System.out.println(items[i]);
+		}
 	}
 
 	@Override
