@@ -83,6 +83,11 @@ public class QueueImpl<T> implements IQueue<T>{
 
 	@Override
 	public void print() {
+		if(itemCount == 0)
+		{
+			System.out.println("Queue is Empty!!");
+			return;
+		}
 		System.out.println("Queue Items : ");
 		for (int i = head; i <= tail; i = (i+1)%arraySize)
 		{

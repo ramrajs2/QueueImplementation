@@ -39,10 +39,10 @@ public class Executor
             String threadName = Thread.currentThread().getName();
             try
             {
-                System.out.println(threadName + " puts value " + (randomVal + 1));
+                System.out.println(threadName + " puts value " + randomVal);
                 myqueue.put(randomVal++);
                 Thread.sleep(1000);
-                System.out.println(threadName + " puts value " + (randomVal + 1));
+                System.out.println(threadName + " puts value " + randomVal);
                 myqueue.put(randomVal++);
                 if (randomVal == 10)
                 {
