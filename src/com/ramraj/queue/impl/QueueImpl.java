@@ -35,13 +35,19 @@ public class QueueImpl<T> implements IQueue<T>{
 			throw new EmptyQueueException("Queue is Empty");
 		}
 
-		T item = items[head];
-		itemCount--;
-		if(itemCount == 0) {
-			head = tail = -1;
-		}
-		else {
-			head = (head + 1) % arraySize;
+		T item;
+		synchronized (items)
+		{
+			item = items[head];
+			itemCount--;
+			if (itemCount == 0)
+			{
+				head = tail = -1;
+			}
+			else
+			{
+				head = (head + 1) % arraySize;
+			}
 		}
 		return item;
 	}
@@ -53,9 +59,12 @@ public class QueueImpl<T> implements IQueue<T>{
 			throw new FullQueueException("Queue is Full");
 		}
 
-		tail = (tail+1)%arraySize;
-		items[tail] = item;
-		itemCount++;
+		synchronized (items)
+		{
+			tail = (tail + 1) % arraySize;
+			items[tail] = item;
+			itemCount++;
+		}
 		return true;
 	}
 
@@ -82,7 +91,11 @@ public class QueueImpl<T> implements IQueue<T>{
 	public T peek() {
 		if(isEmpty())
 			return null;
-		return items[head];
+		T item;
+		synchronized (items) {
+			item = items[head];
+		}
+		return item;
 	}
 
 	@Override
@@ -95,16 +108,22 @@ public class QueueImpl<T> implements IQueue<T>{
 		if(size == arraySize)
 			return true;
 
-		T[] newItemsArray = (T[])new Object[size];
-		try {
-			for(int i=0; i<=itemCount; i++) {
-				newItemsArray[i] = items[i];
+		synchronized (items)
+		{
+			T[] newItemsArray = (T[]) new Object[size];
+			try
+			{
+				for (int i = 0; i <= itemCount; i++)
+				{
+					newItemsArray[i] = items[i];
+				}
+				items = newItemsArray;
+				arraySize = size;
 			}
-			items = newItemsArray;
-			arraySize = size;
-		}
-		catch (Exception e) {
-			throw new QueueResizeFailureException("Not able to resize the array", e);
+			catch (Exception e)
+			{
+				throw new QueueResizeFailureException("Not able to resize the array", e);
+			}
 		}
 		return  true;
 	}
