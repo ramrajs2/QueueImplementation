@@ -1,6 +1,8 @@
 package com.ramraj.queue;
 
 import com.ramraj.queue.exception.EmptyQueueException;
+import com.ramraj.queue.exception.FullQueueException;
+
 /**
  * Generic interface to define the features of my queues
  * 
@@ -15,7 +17,7 @@ public interface IQueue<T> {
 	 * removes it from the queue
 	 * 
 	 * @return item on the head
-	 * @throws EmptyQueueException if queue is empty 
+	 * @throws EmptyQueueException if queue is empty
 	 */
 	public T get() throws EmptyQueueException;
 	
@@ -25,7 +27,7 @@ public interface IQueue<T> {
 	 * @param item
 	 * @return
 	 */
-	public boolean put(T item);
+	public boolean put(T item) throws FullQueueException;
 	
 	/**
 	 * Returns the items on the head but doesn't remove it

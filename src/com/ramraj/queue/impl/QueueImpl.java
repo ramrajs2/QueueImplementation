@@ -2,6 +2,7 @@ package com.ramraj.queue.impl;
 
 import com.ramraj.queue.IQueue;
 import com.ramraj.queue.exception.EmptyQueueException;
+import com.ramraj.queue.exception.FullQueueException;
 
 /**
  * Implementation of {@link IQueue}
@@ -42,8 +43,15 @@ public class QueueImpl<T> implements IQueue<T>{
 	}
 
 	@Override
-	public boolean put(T item) {
-		return false;
+	public boolean put(T item) throws FullQueueException
+	{
+		if(isFull()) {
+			throw new FullQueueException("Queue is Full");
+		}
+
+		tail = (tail+1)%arraySize;
+		items[tail] = item;
+		return true;
 	}
 
 	@Override
