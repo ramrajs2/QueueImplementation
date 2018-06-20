@@ -116,6 +116,12 @@ public class QueueImpl<T> implements IQueue<T>{
 			T[] newItemsArray = (T[]) new Object[size];
 			try
 			{
+				if(isEmpty()) {
+					items = newItemsArray;
+					arraySize = size;
+					return true;
+				}
+
 				int i = head;
 				int newArrayindex = 0;
 				while (i <= tail)
